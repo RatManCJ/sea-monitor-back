@@ -1,12 +1,11 @@
 package org.jingc.entity;
 
-import com.alibaba.excel.annotation.ExcelProperty;
-import com.alibaba.excel.annotation.write.style.ColumnWidth;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * @Title: WaterQuality
@@ -20,52 +19,52 @@ import java.math.BigDecimal;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ColumnWidth(25)
+@Builder
 public class WaterQuality {
 
-    @ExcelProperty(value = "id", index = 0)
+    // 主键id
     private String id;
 
-    @ExcelProperty(value = "sea", index = 1)
+    // 海区
     private String sea;
 
-    @ExcelProperty(value = "province", index = 2)
+    // 省份
     private String province;
 
-    @ExcelProperty(value = "city", index = 3)
+    // 地市
     private String city;
 
-    @ExcelProperty(value = "site", index = 4)
+    // 点位编码
     private String site;
 
-    @ExcelProperty(value = "lon", index = 5)
-    private String lon;
+    // 实测经度
+    private String longitude;
 
-    @ExcelProperty(value = "lat", index = 6)
-    private String lat;
+    // 实测纬度
+    private String latitude;
 
-    @ExcelProperty(value = "minitor_month", index = 7)
-    private String monitorMonth;
+    // 监测时间
+    private Date monitorMonth;
 
-    @ExcelProperty(value = "pH", index = 8)
-    private String pH;
+    // ph
+    private String ph;
 
-    @ExcelProperty(value = "rjy", index = 9)
-    private String rjy;
+    // 溶解氧
+    private String dissolvedOxygen;
 
-    @ExcelProperty(value = "hxxyl", index = 10)
-    private String hxxyl;
+    // 化学需氧量
+    private String chemicalOxygenDemand;
 
-    @ExcelProperty(value = "wjd", index = 11)
-    private String wjd;
+    // 无机氮
+    private String inorganicNitrogen;
 
-    @ExcelProperty(value = "hxlxy", index = 12)
-    private String hxlxy;
+    // 活性磷酸盐
+    private String activePhosphate;
 
-    @ExcelProperty(value = "syl", index = 13)
-    private String syl;
+    // 石油类
+    private String petroleum;
 
-    @ExcelProperty(value = "szlb", index = 14)
-    private String szlb;
+    // 水质类别
+    private String waterQualityClassification;
 
 }
