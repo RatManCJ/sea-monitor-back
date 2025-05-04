@@ -4,14 +4,18 @@ import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.EasyExcelFactory;
 import com.alibaba.excel.ExcelReader;
 import com.alibaba.excel.read.metadata.ReadSheet;
+import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
 import org.jingc.entity.WaterQuality;
 import org.jingc.entity.WaterQualityIn;
+import org.jingc.entity.WaterQualityOut;
 import org.jingc.mapper.WaterQualityMapper;
 import org.jingc.utils.ExcelImportListener;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.time.YearMonth;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -58,7 +62,35 @@ public class WaterQualityService {
         return waterQualityMapper.getDataByTime(time);
     }
 
-    public List<WaterQuality> getDataBySiteInfo(String site) {
-        return waterQualityMapper.getDataBySiteInfo(site);
+    public List<WaterQualityOut> getDataBySiteInfo(String site) {
+        List<WaterQuality> dataBySiteInfo = waterQualityMapper.getDataBySiteInfo(site);
+        List<WaterQualityOut> waterQualityOuts = new ArrayList<>();
+
+        // 创建一个SimpleDateFormat对象用于解析原始日期字符串
+        SimpleDateFormat originalFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
+        // 创建一个新的SimpleDateFormat对象用于格式化日期为"yy-MM"格式
+        SimpleDateFormat newFormat = new SimpleDateFormat("yy-MM");
+        for (WaterQuality waterQuality : dataBySiteInfo) {
+            WaterQualityOut build = WaterQualityOut.builder()
+                    .id(waterQuality.getId())
+                    .sea(waterQuality.getSea())
+                    .province(waterQuality.getProvince())
+                    .city(waterQuality.getCity())
+                    .site(waterQuality.getSite())
+                    .longitude(waterQuality.getLongitude())
+                    .latitude(waterQuality.getLatitude())
+                    .monitorMonth(newFormat.format(waterQuality.getMonitorMonth()))
+                    .ph(waterQuality.getPh())
+                    .dissolvedOxygen(waterQuality.getDissolvedOxygen())
+                    .chemicalOxygenDemand(waterQuality.getChemicalOxygenDemand())
+                    .inorganicNitrogen(waterQuality.getInorganicNitrogen())
+                    .activePhosphate(waterQuality.getActivePhosphate())
+                    .petroleum(waterQuality.getPetroleum())
+                    .waterQualityClassification(waterQuality.getWaterQualityClassification())
+                    .build();
+            waterQualityOuts.add(build);
+        }
+
+        return waterQualityOuts;
     }
 }

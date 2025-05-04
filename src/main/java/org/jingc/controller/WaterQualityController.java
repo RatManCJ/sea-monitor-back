@@ -2,6 +2,7 @@ package org.jingc.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.jingc.entity.WaterQuality;
+import org.jingc.entity.WaterQualityOut;
 import org.jingc.service.WaterQualityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -56,10 +57,10 @@ public class WaterQualityController {
 
 
     @GetMapping("get-data-by-site-info")
-    public List<WaterQuality> getDataBySiteInfo(@RequestParam String site) {
+    public List<WaterQualityOut> getDataBySiteInfo(@RequestParam String site) {
         try {
             log.info("site:{}", site);
-            List<WaterQuality> waterQualityList = waterQualityService.getDataBySiteInfo(site);
+            List<WaterQualityOut> waterQualityList = waterQualityService.getDataBySiteInfo(site);
             log.info("获取到的数据条数 size:{}", waterQualityList.size());
             return waterQualityList;
         } catch (Exception e){
