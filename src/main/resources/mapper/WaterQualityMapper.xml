@@ -82,9 +82,23 @@
         select * from water_quality LIMIT 1000;
     </select>
     <select id="getDataByTime" resultType="org.jingc.entity.WaterQuality">
-        select * from water_quality where monitor_month = #{time};
+        select * from water_quality where monitor_month = #{time} ;
     </select>
     <select id="getDataBySiteInfo" resultType="org.jingc.entity.WaterQuality">
         select * from water_quality where site = #{site};
+    </select>
+    <select id="getByCityAndYear" resultType="org.jingc.entity.WaterQuality">
+        select *
+        from
+        water_quality
+        where city = #{city}
+        and monitor_month = #{time}
+        and water_quality_classification = #{waterQualityClassification};
+    </select>
+    <select id="getAllCityByTime" resultType="java.lang.String">
+        select distinct city
+        from water_quality
+        where monitor_month = #{time}
+        and water_quality_classification = #{waterQualityClassification};
     </select>
 </mapper>

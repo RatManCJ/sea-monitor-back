@@ -1,6 +1,7 @@
 package org.jingc.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import org.jingc.entity.GeoJsonData;
 import org.jingc.entity.WaterQuality;
 import org.jingc.entity.WaterQualityOut;
 import org.jingc.service.WaterQualityService;
@@ -27,7 +28,6 @@ import java.util.List;
 public class WaterQualityController {
 
 
-
     @Autowired
     private WaterQualityService waterQualityService;
 
@@ -36,6 +36,7 @@ public class WaterQualityController {
         waterQualityService.importData();
         return "success";
     }
+
     @GetMapping("/get-data-by-time")
     public List<WaterQuality> getDataByTime(@RequestParam String time) throws ParseException {
         int size = 0;
@@ -63,10 +64,32 @@ public class WaterQualityController {
             List<WaterQualityOut> waterQualityList = waterQualityService.getDataBySiteInfo(site);
             log.info("获取到的数据条数 size:{}", waterQualityList.size());
             return waterQualityList;
-        } catch (Exception e){
+        } catch (Exception e) {
             log.error("org.jingc.controller.WaterQualityController.getDataBySiteInfo ERROR:", e);
             throw new RuntimeException("获取数据失败");
         }
+    }
+
+    @GetMapping("get-data-by-year-city")
+    public List<WaterQualityOut> getDataByCityAndYear(@RequestParam String city,
+                                                      @RequestParam String time,
+                                                      @RequestParam String waterQualityClassification
+
+    ) throws ParseException {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date parsedTime = dateFormat.parse(time);
+        return waterQualityService.getByCityAndYear(city, parsedTime, waterQualityClassification);
+    }
+
+    @GetMapping("get-all-city-by-time")
+    public List<String> getAllCityByTime(
+            @RequestParam String time,
+            @RequestParam String waterQualityClassification
+
+    ) throws ParseException {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date parsedTime = dateFormat.parse(time);
+        return waterQualityService.getAllCityByTime(parsedTime, waterQualityClassification);
     }
 
 }

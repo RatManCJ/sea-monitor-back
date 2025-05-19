@@ -4,8 +4,8 @@ import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.EasyExcelFactory;
 import com.alibaba.excel.ExcelReader;
 import com.alibaba.excel.read.metadata.ReadSheet;
-import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
+import org.jingc.entity.GeoJsonData;
 import org.jingc.entity.WaterQuality;
 import org.jingc.entity.WaterQualityIn;
 import org.jingc.entity.WaterQualityOut;
@@ -71,26 +71,31 @@ public class WaterQualityService {
         // 创建一个新的SimpleDateFormat对象用于格式化日期为"yy-MM"格式
         SimpleDateFormat newFormat = new SimpleDateFormat("yy-MM");
         for (WaterQuality waterQuality : dataBySiteInfo) {
-            WaterQualityOut build = WaterQualityOut.builder()
-                    .id(waterQuality.getId())
-                    .sea(waterQuality.getSea())
-                    .province(waterQuality.getProvince())
-                    .city(waterQuality.getCity())
-                    .site(waterQuality.getSite())
-                    .longitude(waterQuality.getLongitude())
-                    .latitude(waterQuality.getLatitude())
-                    .monitorMonth(newFormat.format(waterQuality.getMonitorMonth()))
-                    .ph(waterQuality.getPh())
-                    .dissolvedOxygen(waterQuality.getDissolvedOxygen())
-                    .chemicalOxygenDemand(waterQuality.getChemicalOxygenDemand())
-                    .inorganicNitrogen(waterQuality.getInorganicNitrogen())
-                    .activePhosphate(waterQuality.getActivePhosphate())
-                    .petroleum(waterQuality.getPetroleum())
-                    .waterQualityClassification(waterQuality.getWaterQualityClassification())
-                    .build();
+            WaterQualityOut build = WaterQualityOut.builder().id(waterQuality.getId()).sea(waterQuality.getSea()).province(waterQuality.getProvince()).city(waterQuality.getCity()).site(waterQuality.getSite()).longitude(waterQuality.getLongitude()).latitude(waterQuality.getLatitude()).monitorMonth(newFormat.format(waterQuality.getMonitorMonth())).ph(waterQuality.getPh()).dissolvedOxygen(waterQuality.getDissolvedOxygen()).chemicalOxygenDemand(waterQuality.getChemicalOxygenDemand()).inorganicNitrogen(waterQuality.getInorganicNitrogen()).activePhosphate(waterQuality.getActivePhosphate()).petroleum(waterQuality.getPetroleum()).waterQualityClassification(waterQuality.getWaterQualityClassification()).build();
             waterQualityOuts.add(build);
         }
 
         return waterQualityOuts;
+    }
+
+    public List<WaterQualityOut> getByCityAndYear(String city, Date parsedTime, String waterQualityClassification) {
+        List<WaterQuality> byCityAndYear = waterQualityMapper.getByCityAndYear(city, parsedTime, waterQualityClassification);
+        List<WaterQualityOut> waterQualityOuts = new ArrayList<>();
+
+        // 创建一个SimpleDateFormat对象用于解析原始日期字符串
+        SimpleDateFormat originalFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
+        // 创建一个新的SimpleDateFormat对象用于格式化日期为"yy-MM"格式
+        SimpleDateFormat newFormat = new SimpleDateFormat("yy-MM");
+
+        for (WaterQuality waterQuality : byCityAndYear) {
+            WaterQualityOut build = WaterQualityOut.builder().id(waterQuality.getId()).sea(waterQuality.getSea()).province(waterQuality.getProvince()).city(waterQuality.getCity()).site(waterQuality.getSite()).longitude(waterQuality.getLongitude()).latitude(waterQuality.getLatitude()).monitorMonth(newFormat.format(waterQuality.getMonitorMonth())).ph(waterQuality.getPh()).dissolvedOxygen(waterQuality.getDissolvedOxygen()).chemicalOxygenDemand(waterQuality.getChemicalOxygenDemand()).inorganicNitrogen(waterQuality.getInorganicNitrogen()).activePhosphate(waterQuality.getActivePhosphate()).petroleum(waterQuality.getPetroleum()).waterQualityClassification(waterQuality.getWaterQualityClassification()).build();
+            waterQualityOuts.add(build);
+        }
+
+        return waterQualityOuts;
+    }
+
+    public List<String> getAllCityByTime(Date parsedTime, String waterQualityClassification) {
+        return waterQualityMapper.getAllCityByTime(parsedTime, waterQualityClassification);
     }
 }

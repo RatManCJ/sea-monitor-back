@@ -26,4 +26,8 @@ public interface WaterQualityMapper {
     List<WaterQuality> getDataByTime(Date time);
 
     List<WaterQuality> getDataBySiteInfo(String site);
+
+    List<WaterQuality> getByCityAndYear(String city, Date time, String waterQualityClassification);
+
+    List<String> getAllCityByTime(Date time, String waterQualityClassification);
 }
