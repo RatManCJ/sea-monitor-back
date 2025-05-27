@@ -1,7 +1,6 @@
 package org.jingc.controller;
 
 import lombok.extern.slf4j.Slf4j;
-import org.jingc.entity.GeoJsonData;
 import org.jingc.entity.WaterQuality;
 import org.jingc.entity.WaterQualityOut;
 import org.jingc.service.WaterQualityService;

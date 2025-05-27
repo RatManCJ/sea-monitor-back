@@ -5,7 +5,6 @@ import com.alibaba.excel.EasyExcelFactory;
 import com.alibaba.excel.ExcelReader;
 import com.alibaba.excel.read.metadata.ReadSheet;
 import lombok.extern.slf4j.Slf4j;
-import org.jingc.entity.GeoJsonData;
 import org.jingc.entity.WaterQuality;
 import org.jingc.entity.WaterQualityIn;
 import org.jingc.entity.WaterQualityOut;
