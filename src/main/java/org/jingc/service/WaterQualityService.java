@@ -10,7 +10,9 @@ import org.jingc.entity.WaterQualityIn;
 import org.jingc.entity.WaterQualityOut;
 import org.jingc.mapper.WaterQualityMapper;
 import org.jingc.utils.ExcelImportListener;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.text.SimpleDateFormat;
 import java.time.YearMonth;
@@ -35,21 +37,17 @@ public class WaterQualityService {
         this.waterQualityMapper = waterQualityMapper;
     }
 
-    public void importData() {
+    public void importData(MultipartFile multipartFile) {
         ExcelImportListener<WaterQualityIn> importListener = new ExcelImportListener<>();
         // 获取文件名
-        String file = "src/main/resources/water_quality_report_by_year.xlsx";
+        String file = multipartFile.getName();
         ExcelReader excelReader = EasyExcelFactory.read(file, WaterQualityIn.class, importListener).build();
         // 读取所有 sheet
         List<ReadSheet> readSheetList = EasyExcel.read(file).build().excelExecutor().sheetList();
         for (ReadSheet readSheet : readSheetList) {
             excelReader.read(readSheet);
         }
-        List<WaterQualityIn> datas = importListener.getDatas();
-        for (WaterQualityIn data : datas) {
-            String monitorMonth = data.getMonitorMonth();
-            YearMonth yearMonth = YearMonth.parse(monitorMonth);
-        }
+
         excelReader.finish();
     }
 

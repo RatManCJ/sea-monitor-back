@@ -1,5 +1,10 @@
 package org.jingc.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jingc.entity.WaterQuality;
 import org.jingc.entity.WaterQualityOut;
@@ -11,6 +16,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Title: WaterQuality
@@ -29,12 +35,6 @@ public class WaterQualityController {
 
     @Autowired
     private WaterQualityService waterQualityService;
-
-    @GetMapping("import")
-    public String importData() {
-        waterQualityService.importData();
-        return "success";
-    }
 
     @GetMapping("/get-data-by-time")
     public List<WaterQuality> getDataByTime(@RequestParam String time) throws ParseException {
@@ -91,4 +91,36 @@ public class WaterQualityController {
         return waterQualityService.getAllCityByTime(parsedTime, waterQualityClassification);
     }
 
+    @GetMapping("demo")
+    public String demo(@RequestParam Map<String, Object> params) {
+
+        // 创建ObjectMapper实例
+        ObjectMapper objectMapper = new ObjectMapper();
+        String id = params.get("id").toString();
+
+        String o = (String)params.get("name");
+
+        System.out.println("o = " + o);
+
+//        // 将 demo 字段的 map 转换为 Demo 对象
+//        Map<String, Object> demoMap = (Map<String, Object>) params.get("demo");
+//        Demo demo = objectMapper.convertValue(demoMap, Demo.class);
+//
+//        System.out.println("id:" + id);
+//        System.out.println("demo.toString() = " + demo.toString());
+
+        return "demo";
+    }
+
+
+}
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+class Demo {
+    private Long id;
+
+    private String name;
 }
